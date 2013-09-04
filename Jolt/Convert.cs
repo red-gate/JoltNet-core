@@ -69,7 +69,7 @@ namespace Jolt
         /// for a given <see cref="System.Reflection.EventInfo"/>.
         /// </summary>
         /// 
-        /// <param name="type">
+        /// <param name="eventInfo">
         /// The <see cref="System.Reflection.EventInfo"/> to convert.
         /// </param>
         /// 
@@ -86,7 +86,7 @@ namespace Jolt
         /// for a given <see cref="System.Reflection.FieldInfo"/>.
         /// </summary>
         /// 
-        /// <param name="type">
+        /// <param name="field">
         /// The <see cref="System.Reflection.FieldInfo"/> to convert.
         /// </param>
         /// 
@@ -103,7 +103,7 @@ namespace Jolt
         /// for a given <see cref="System.Reflection.PropertyInfo"/>.
         /// </summary>
         /// 
-        /// <param name="type">
+        /// <param name="property">
         /// The <see cref="System.Reflection.PropertyInfo"/> to convert.
         /// </param>
         /// 
@@ -120,7 +120,7 @@ namespace Jolt
         /// for a given <see cref="System.Reflection.ConstructorInfo"/>.
         /// </summary>
         /// 
-        /// <param name="type">
+        /// <param name="constructor">
         /// The <see cref="System.Reflection.ConstructorInfo"/> to convert.
         /// </param>
         /// 
@@ -141,7 +141,7 @@ namespace Jolt
         /// for a given <see cref="System.Reflection.MethodInfo"/>.
         /// </summary>
         /// 
-        /// <param name="type">
+        /// <param name="method">
         /// The <see cref="System.Reflection.MethodInfo"/> to convert.
         /// </param>
         /// 
@@ -360,6 +360,13 @@ namespace Jolt
 
             namePosition = builder.Length;
             builder.Append(member.Name);
+
+            var methodInfo = member as MethodInfo;
+            if (methodInfo != null && methodInfo.IsGenericMethod)
+            {
+                builder.Append("``");
+                builder.Append(methodInfo.GetGenericArguments().Length);
+            }
 
             if (memberParameters.Length > 0)
             {

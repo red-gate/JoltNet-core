@@ -198,15 +198,15 @@ namespace Jolt.Test
 
             Assert.That(
                 Convert.ToXmlDocCommentMember(typeof(System.Collections.Generic.List<>).GetMethod("ConvertAll")),
-                Is.EqualTo("M:System.Collections.Generic.List`1.ConvertAll(System.Converter{`0,``0})"));
+                Is.EqualTo("M:System.Collections.Generic.List`1.ConvertAll``1(System.Converter{`0,``0})"));
             
             Assert.That(
                 Convert.ToXmlDocCommentMember(typeof(Enumerable).GetMethods().Single(m => m.Name == "ToLookup" && m.GetParameters().Length == 4)),
-                Is.EqualTo("M:System.Linq.Enumerable.ToLookup(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2},System.Collections.Generic.IEqualityComparer{``1})"));
+                Is.EqualTo("M:System.Linq.Enumerable.ToLookup``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2},System.Collections.Generic.IEqualityComparer{``1})"));
 
             Assert.That(
                 Convert.ToXmlDocCommentMember(PointerTestType<int>.Method),
-                Is.EqualTo("M:Jolt.Test.Types.PointerTestType`1._method(System.Int32,`0[0:,0:]@,System.Action{``0[0:,0:][]}*[][0:,0:]@,System.Action{System.Int32**[0:,0:,0:][]})"));
+                Is.EqualTo("M:Jolt.Test.Types.PointerTestType`1._method``1(System.Int32,`0[0:,0:]@,System.Action{``0[0:,0:][]}*[][0:,0:]@,System.Action{System.Int32**[0:,0:,0:][]})"));
         }
 
         /// <summary>

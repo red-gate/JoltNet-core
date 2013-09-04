@@ -248,7 +248,7 @@ namespace Jolt.Functional
         /// <typeparam name="T2">
         /// The type of the second argument of the function-to-bind.
         /// </typeparam>
-
+        ///
         /// <typeparam name="U">
         /// The type of the argument of the inner function.
         /// </typeparam>
@@ -1089,6 +1089,10 @@ namespace Jolt.Functional
         /// The type of the argument of the inner function.
         /// </typeparam>
         /// 
+        /// <param name="function">
+        /// The function to bind to.
+        /// </param>
+        /// 
         /// <param name="value">
         /// The inner function that participates in the composite.
         /// </param>
@@ -1122,6 +1126,10 @@ namespace Jolt.Functional
         /// The type of the second argument of the inner function.
         /// </typeparam>
         /// 
+        /// <param name="function">
+        /// The function to bind to.
+        /// </param>
+        ///
         /// <param name="value">
         /// The inner function that participates in the composite.
         /// </param>
@@ -1159,6 +1167,10 @@ namespace Jolt.Functional
         /// The type of the third argument of the inner function.
         /// </typeparam>
         /// 
+        /// <param name="function">
+        /// The function to bind to.
+        /// </param>
+        ///
         /// <param name="value">
         /// The inner function that participates in the composite.
         /// </param>

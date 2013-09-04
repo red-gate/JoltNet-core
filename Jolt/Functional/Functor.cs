@@ -45,7 +45,7 @@ namespace Jolt.Functional
         /// <see cref="System.Func&lt;T, TResult&gt;"/> return value.
         /// </summary>
         /// 
-        /// <typeparam name="T1">
+        /// <typeparam name="T">
         /// The type of the first function argument.
         /// </typeparam>
         /// 

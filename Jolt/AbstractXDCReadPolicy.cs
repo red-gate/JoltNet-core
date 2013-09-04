@@ -79,9 +79,9 @@ namespace Jolt
             get { return m_xmlDocCommentsFullPath; }
         }
 
-        /// <param name="fileProxy">
+        /// <summary>
         /// Gets the proxy to the file system.
-        /// </param>
+        /// </summary>
         internal IFile FileProxy
         {
             get { return m_fileProxy; }
