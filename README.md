@@ -1,4 +1,4 @@
-jolt
+Jolt
 ====
 
-A fork of Jolt.NET : Productivity Libraries for the .NET Framework
+A fork of Jolt.NET : Productivity Libraries for the .NET Framework.

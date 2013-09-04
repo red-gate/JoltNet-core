@@ -2,6 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5DCC54DE-A15F-4719-BECE-463295EE32C3}"
+	ProjectSection(SolutionItems) = preProject
+		Jolt.snk = Jolt.snk
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jolt", "Jolt\Jolt.csproj", "{DA98557A-159C-4D4B-9663-7E7D479318CE}"
 EndProject
