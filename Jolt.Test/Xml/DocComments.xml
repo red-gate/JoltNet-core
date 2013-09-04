@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>assembly-name</name>
+  </assembly>
+  <members>
+    <member name="member-name">
+      Text
+      <content/>
+    </member>
+    <member name="another-member-name">
+      <otherContent/>
+    </member>
+  </members>
+</doc>
