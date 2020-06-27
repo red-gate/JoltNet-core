@@ -14,7 +14,6 @@ using System.Xml.Schema;
 
 using Jolt.IO;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace Jolt.Test
 {
@@ -31,9 +30,9 @@ namespace Jolt.Test
         {
             using (StreamReader expectedReader = OpenDocCommentsXml())
             {
-                base.Constructrion_Internal(
+                base.Construction_Internal(
                     CreatePolicy,
-                    (expectedFilename, fileProxy) => fileProxy.Expect(f => f.OpenText(expectedFilename)).Return(expectedReader),
+                    (expectedFilename, fileProxy) => fileProxy.Setup(f => f.OpenText(expectedFilename)).Returns(expectedReader).Verifiable(),
                     p => Assert.That(expectedReader.BaseStream.Position, Is.EqualTo(expectedReader.BaseStream.Length)));
             }
         }
@@ -42,16 +41,21 @@ namespace Jolt.Test
         /// Verifies the construction of the class when the given
         /// XML doc comment file is invalid.
         /// </summary>
-        [Test, ExpectedException(typeof(XmlSchemaValidationException))]
+        [Test]
         public void Construction_InvalidXml()
         {
-            using (StreamReader expectedReader = new StreamReader(new MemoryStream(Encoding.Default.GetBytes("<invalidXml/>"))))
+            Assert.Throws<XmlSchemaValidationException>(() =>
             {
-                base.Constructrion_Internal(
-                    CreatePolicy,
-                    (expectedFilename, fileProxy) => fileProxy.Expect(f => f.OpenText(expectedFilename)).Return(expectedReader),
-                    NullAssert);
-            }
+                using (StreamReader expectedReader =
+                    new StreamReader(new MemoryStream(Encoding.Default.GetBytes("<invalidXml/>"))))
+                {
+                    base.Construction_Internal(
+                        CreatePolicy,
+                        (expectedFilename, fileProxy) =>
+                            fileProxy.Setup(f => f.OpenText(expectedFilename)).Returns(expectedReader).Verifiable(),
+                        NullAssert);
+                }
+            });
         }
 
         /// <summary>

@@ -5,3 +5,5 @@ obj
 bin
 /packages
 *.bak
+/.idea
+/_ReSharper.Caches

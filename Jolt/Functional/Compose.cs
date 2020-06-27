@@ -3924,7 +3924,7 @@ namespace Jolt.Functional
         /// 
         /// <param name="value">
         /// The inner function that participates in the composite.
-        /// </param
+        /// </param>
         /// 
         /// <returns>
         /// A functor f(w, x, y, s) equivalent to <paramref name="function"/>(w, x, y, <paramref name="value"/>(s)).

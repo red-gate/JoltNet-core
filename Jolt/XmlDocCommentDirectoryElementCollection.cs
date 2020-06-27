@@ -48,7 +48,7 @@ namespace Jolt
         #region ConfigurationElementCollection members --------------------------------------------
 
         /// <summary>
-        /// <see cref="ConfigurationElement.CreateNewElement()"/>
+        /// <see cref="ConfigurationElement.CreateNewElement"/>
         /// </summary>
         protected override ConfigurationElement CreateNewElement()
         {
@@ -56,7 +56,7 @@ namespace Jolt
         }
 
         /// <summary>
-        /// <see cref="ConfigurationElement.CreateNewElement(string)"/>
+        /// <see cref="ConfigurationElement.CreateNewElement"/>
         /// </summary>
         protected override ConfigurationElement CreateNewElement(string elementName)
         {
@@ -64,7 +64,7 @@ namespace Jolt
         }
 
         /// <summary>
-        /// <see cref="ConfigurationElement.GetElementKey(ConfigurationElement)"/>
+        /// <see cref="ConfigurationElement.GetElementKey"/>
         /// </summary>
         protected override object GetElementKey(ConfigurationElement element)
         {

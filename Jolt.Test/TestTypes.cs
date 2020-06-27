@@ -127,29 +127,6 @@ namespace Jolt.Test.Types
         private static readonly Type ThisType = typeof(FieldType<,>);
     }
 
-    internal unsafe abstract class PointerTestType<T>
-    {
-        public static ConstructorInfo Constructor { get { return ThisType.GetConstructors().Single(); } }
-        public static PropertyInfo Property { get { return ThisType.GetProperties().Single(p => p.GetIndexParameters().Length == 3); } }
-        public static MethodInfo Method { get { return ThisType.GetMethod("_method"); } }
-
-        #region property-encapsulated members -----------------------------------------------------
-
-        public PointerTestType(Action<T[]>[] t, out string***[][,][, ,] v) { v = null; }
-
-        public int this[int*[] t, Action<Action<T[]>[][]>[] a, short***[][,][, ,] v]
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public void _method<U>(int x, ref T[,] t, out Action<U[][,]>*[,][] a, Action<int**[][, ,]> b) { a = null; }
-
-        #endregion
-
-        private static readonly Type ThisType = typeof(PointerTestType<>);
-    }
-
     internal abstract class __GenericTestType<R, S, T>
     {
         public static MethodInfo NonGenericFunction { get { return ThisType.GetMethod("_NonGenericFunction"); } }

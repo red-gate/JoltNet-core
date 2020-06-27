@@ -131,10 +131,6 @@ namespace Jolt.Test
             Assert.That(
                 Convert.ToXmlDocCommentMember(IndexerType<int, int>.Indexer_3),
                 Is.EqualTo("P:Jolt.Test.Types.IndexerType`2.Item(`0[],System.Action{System.Action{`1}[0:,0:][]}[][],`0[0:,0:,0:,0:][0:,0:,0:][0:,0:][])"));
-
-            Assert.That(
-                Convert.ToXmlDocCommentMember(PointerTestType<int>.Property),
-                Is.EqualTo("P:Jolt.Test.Types.PointerTestType`1.Item(System.Int32*[],System.Action{System.Action{`0[]}[][]}[],System.Int16***[0:,0:,0:][0:,0:][])"));
         }
 
         /// <summary>
@@ -145,12 +141,12 @@ namespace Jolt.Test
         public void ToXmlDocCommentMember_Constructor()
         {
             Assert.That(
-                Convert.ToXmlDocCommentMember(typeof(System.Collections.Generic.List<>).GetConstructor(NonPublicStatic, null, Type.EmptyTypes, null)),
-                Is.EqualTo("M:System.Collections.Generic.List`1.#cctor"));
+                Convert.ToXmlDocCommentMember(typeof(System.Collections.Generic.List<>).GetConstructor(PublicInstance, null, Type.EmptyTypes, null)),
+                Is.EqualTo("M:System.Collections.Generic.List`1.#ctor"));
 
             Assert.That(
-                Convert.ToXmlDocCommentMember(typeof(string).GetConstructor(NonPublicStatic, null, Type.EmptyTypes, null)),
-                Is.EqualTo("M:System.String.#cctor"));
+                Convert.ToXmlDocCommentMember(typeof(string).GetConstructor(new [] {typeof(char), typeof(int)})),
+                Is.EqualTo("M:System.String.#ctor(System.Char,System.Int32)"));
 
             Assert.That(
                 Convert.ToXmlDocCommentMember(typeof(Exception).GetConstructor(Type.EmptyTypes)),
@@ -171,10 +167,6 @@ namespace Jolt.Test
             Assert.That(
                 Convert.ToXmlDocCommentMember(ConstructorType<int, int>.Constructor_3),
                 Is.EqualTo("M:Jolt.Test.Types.ConstructorType`2.#ctor(`0[],System.Action{System.Action{System.Action{`1}[][]}[]}[][]@,`1[0:,0:,0:,0:][0:,0:,0:][0:,0:][])"));
-
-            Assert.That(
-                Convert.ToXmlDocCommentMember(PointerTestType<int>.Constructor),
-                Is.EqualTo("M:Jolt.Test.Types.PointerTestType`1.#ctor(System.Action{`0[]}[],System.String***[0:,0:,0:][0:,0:][]@)"));
         }
 
         /// <summary>
@@ -203,10 +195,6 @@ namespace Jolt.Test
             Assert.That(
                 Convert.ToXmlDocCommentMember(typeof(Enumerable).GetMethods().Single(m => m.Name == "ToLookup" && m.GetParameters().Length == 4)),
                 Is.EqualTo("M:System.Linq.Enumerable.ToLookup``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2},System.Collections.Generic.IEqualityComparer{``1})"));
-
-            Assert.That(
-                Convert.ToXmlDocCommentMember(PointerTestType<int>.Method),
-                Is.EqualTo("M:Jolt.Test.Types.PointerTestType`1._method``1(System.Int32,`0[0:,0:]@,System.Action{``0[0:,0:][]}*[][0:,0:]@,System.Action{System.Int32**[0:,0:,0:][]})"));
         }
 
         /// <summary>
@@ -462,6 +450,9 @@ namespace Jolt.Test
         #endregion
 
         #region private fields --------------------------------------------------------------------
+
+        private static readonly BindingFlags PublicInstance = BindingFlags.Instance | BindingFlags.Public;
+        private static readonly BindingFlags PublicStatic = BindingFlags.Static | BindingFlags.Public;
 
         private static readonly BindingFlags NonPublicInstance = BindingFlags.Instance | BindingFlags.NonPublic;
         private static readonly BindingFlags NonPublicStatic = BindingFlags.Static | BindingFlags.NonPublic;
