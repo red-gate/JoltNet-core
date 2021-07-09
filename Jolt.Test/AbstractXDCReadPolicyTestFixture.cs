@@ -13,8 +13,8 @@ using System.Linq;
 using System.Xml.Linq;
 
 using Jolt.IO;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace Jolt.Test
 {
@@ -68,20 +68,20 @@ namespace Jolt.Test
         /// <typeparam name="TPolicy">
         /// The type of policy being tested.
         /// </typeparam>
-        protected void Constructrion_Internal<TPolicy>(Func<string, IFile, TPolicy> createPolicy, Action<string, IFile> expect, Action<TPolicy> assert)
+        protected void Construction_Internal<TPolicy>(Func<string, IFile, TPolicy> createPolicy, Action<string, Mock<IFile>> expect, Action<TPolicy> assert)
             where TPolicy : AbstractXDCReadPolicy
         {
-            IFile fileProxy = MockRepository.GenerateMock<IFile>();
+            Mock<IFile> fileProxy = new Mock<IFile>();
             string expectedFullPath = Path.GetRandomFileName();
             expect(expectedFullPath, fileProxy);
 
-            TPolicy policy = createPolicy(expectedFullPath, fileProxy);
+            TPolicy policy = createPolicy(expectedFullPath, fileProxy.Object);
 
             Assert.That(policy.XmlDocCommentsFullPath, Is.SameAs(expectedFullPath));
-            Assert.That(policy.FileProxy, Is.SameAs(fileProxy));
+            Assert.That(policy.FileProxy, Is.SameAs(fileProxy.Object));
             assert(policy);
 
-            fileProxy.VerifyAllExpectations();
+            fileProxy.VerifyAll();
         }
 
         /// <summary>
@@ -102,13 +102,13 @@ namespace Jolt.Test
         protected void ReadMember<TPolicy>(Func<string, IFile, TPolicy> createPolicy, Action<TPolicy> assert)
             where TPolicy : AbstractXDCReadPolicy, IXmlDocCommentReadPolicy
         {
-            IFile fileProxy = MockRepository.GenerateMock<IFile>();
+            Mock<IFile> fileProxy = new Mock<IFile>();
 
             string expectedFileName = Path.GetRandomFileName();
             StreamReader expectedReader = OpenDocCommentsXml();
-            fileProxy.Expect(f => f.OpenText(expectedFileName)).Return(expectedReader);
+            fileProxy.Setup(f => f.OpenText(expectedFileName)).Returns(expectedReader).Verifiable();
 
-            TPolicy policy = createPolicy(expectedFileName, fileProxy);
+            TPolicy policy = createPolicy(expectedFileName, fileProxy.Object);
             string memberName = "another-member-name";
             XElement element = policy.ReadMember(memberName);
 
@@ -119,7 +119,7 @@ namespace Jolt.Test
             Assert.That(element.Element("otherContent").IsEmpty);
             assert(policy);
 
-            fileProxy.VerifyAllExpectations();
+            fileProxy.VerifyAll();
         }
 
         /// <summary>
@@ -141,18 +141,18 @@ namespace Jolt.Test
         protected void ReadMember_DoesNotExist<TPolicy>(Func<string, IFile, TPolicy> createPolicy, Action<TPolicy> assert)
             where TPolicy : AbstractXDCReadPolicy, IXmlDocCommentReadPolicy
         {
-            IFile fileProxy = MockRepository.GenerateMock<IFile>();
+            Mock<IFile> fileProxy = new Mock<IFile>();
 
             string expectedFileName = Path.GetRandomFileName();
             StreamReader expectedReader = OpenDocCommentsXml();
-            fileProxy.Expect(f => f.OpenText(expectedFileName)).Return(expectedReader);
+            fileProxy.Setup(f => f.OpenText(expectedFileName)).Returns(expectedReader).Verifiable();
 
-            TPolicy policy = createPolicy(expectedFileName, fileProxy);
+            TPolicy policy = createPolicy(expectedFileName, fileProxy.Object);
 
             Assert.That(policy.ReadMember("invalidMemberName"), Is.Null);
             assert(policy);
 
-            fileProxy.VerifyAllExpectations();
+            fileProxy.VerifyAll();
         }
 
         

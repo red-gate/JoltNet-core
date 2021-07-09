@@ -13,8 +13,8 @@ using System.Linq;
 using System.Reflection;
 
 using Jolt.Functional;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace Jolt.Test.Functional
 {
@@ -30,13 +30,13 @@ namespace Jolt.Test.Functional
         [Test]
         public void ToAction_NoArgs()
         {
-            Func<int> function = MockRepository.GenerateMock<Func<int>>();
-            function.Expect(f => f()).Return(0);
+            Mock<Func<int>> function = new Mock<Func<int>>();
+            function.Setup(f => f()).Returns(0).Verifiable();
 
-            Action action = Functor.ToAction(function);
+            Action action = Functor.ToAction(function.Object);
             action();
 
-            function.VerifyAllExpectations();
+            function.VerifyAll();
         }
 
         /// <summary>
@@ -46,15 +46,15 @@ namespace Jolt.Test.Functional
         [Test]
         public void ToAction_OneArg()
         {
-            Func<string, int> function = MockRepository.GenerateMock<Func<string, int>>();
+            Mock<Func<string, int>> function = new Mock<Func<string, int>>();
 
             string functionArg = "first-arg";
-            function.Expect(f => f(functionArg)).Return(0);
+            function.Setup(f => f(functionArg)).Returns(0).Verifiable();
 
-            Action<string> action = Functor.ToAction(function);
+            Action<string> action = Functor.ToAction(function.Object);
             action(functionArg);
 
-            function.VerifyAllExpectations();
+            function.VerifyAll();
         }
 
         /// <summary>
@@ -64,15 +64,15 @@ namespace Jolt.Test.Functional
         [Test]
         public void ToAction_TwoArgs()
         {
-            Func<string, Stream, int> function = MockRepository.GenerateMock<Func<string, Stream, int>>();
+            Mock<Func<string, Stream, int>> function = new Mock<Func<string, Stream, int>>();
 
             string functionArg = "first-arg";
-            function.Expect(f => f(functionArg, Stream.Null)).Return(0);
+            function.Setup(f => f(functionArg, Stream.Null)).Returns(0).Verifiable();
 
-            Action<string, Stream> action = Functor.ToAction(function);
+            Action<string, Stream> action = Functor.ToAction(function.Object);
             action(functionArg, Stream.Null);
 
-            function.VerifyAllExpectations();
+            function.VerifyAll();
         }
 
         /// <summary>
@@ -82,16 +82,16 @@ namespace Jolt.Test.Functional
         [Test]
         public void ToAction_ThreeArgs()
         {
-            Func<string, Stream, TextReader, int> function = MockRepository.GenerateMock<Func<string, Stream, TextReader, int>>();
+            Mock<Func<string, Stream, TextReader, int>> function = new Mock<Func<string, Stream, TextReader, int>>();
 
             string functionArg_1 = "first-arg";
             StreamReader functionArg_3 = new StreamReader(Stream.Null);
-            function.Expect(f => f(functionArg_1, Stream.Null, functionArg_3)).Return(0);
+            function.Setup(f => f(functionArg_1, Stream.Null, functionArg_3)).Returns(0).Verifiable();
 
-            Action<string, Stream, TextReader> action = Functor.ToAction(function);
+            Action<string, Stream, TextReader> action = Functor.ToAction(function.Object);
             action(functionArg_1, Stream.Null, functionArg_3);
 
-            function.VerifyAllExpectations();
+            function.VerifyAll();
         }
 
         /// <summary>
@@ -101,17 +101,17 @@ namespace Jolt.Test.Functional
         [Test]
         public void ToAction_FourArgs()
         {
-            Func<string, Stream, TextReader, DayOfWeek, int> function = MockRepository.GenerateMock<Func<string, Stream, TextReader, DayOfWeek, int>>();
+            Mock<Func<string, Stream, TextReader, DayOfWeek, int>> function = new Mock<Func<string, Stream, TextReader, DayOfWeek, int>>();
 
             string functionArg_1 = "first-arg";
             StreamReader functionArg_3 = new StreamReader(Stream.Null);
             DayOfWeek functionArg_4 = DayOfWeek.Friday;
-            function.Expect(f => f(functionArg_1, Stream.Null, functionArg_3, functionArg_4)).Return(0);
+            function.Setup(f => f(functionArg_1, Stream.Null, functionArg_3, functionArg_4)).Returns(0).Verifiable();
 
-            Action<string, Stream, TextReader, DayOfWeek> action = Functor.ToAction(function);
+            Action<string, Stream, TextReader, DayOfWeek> action = Functor.ToAction(function.Object);
             action(functionArg_1, Stream.Null, functionArg_3, functionArg_4);
 
-            function.VerifyAllExpectations();
+            function.VerifyAll();
         }
 
         /// <summary>
@@ -121,13 +121,11 @@ namespace Jolt.Test.Functional
         [Test]
         public void ToAction_EventHandler()
         {
-            EventHandler<EventArgs> eventHandler = MockRepository.GenerateStub<EventHandler<EventArgs>>();
+            EventHandler<EventArgs> eventHandler = Mock.Of<EventHandler<EventArgs>>();
 
             Action<object, EventArgs> action = Functor.ToAction(eventHandler);
             Assert.That(action.Method, Is.SameAs(eventHandler.Method));
             Assert.That(action.Target, Is.SameAs(eventHandler.Target));
-
-            eventHandler.VerifyAllExpectations();
         }
 
         /// <summary>
@@ -136,13 +134,11 @@ namespace Jolt.Test.Functional
         [Test]
         public void ToEventHandler()
         {
-            Action<object, EventArgs> action = MockRepository.GenerateStub<Action<object, EventArgs>>();
+            Action<object, EventArgs> action = Mock.Of<Action<object, EventArgs>>();
 
             EventHandler<EventArgs> eventHandler = Functor.ToEventHandler(action);
             Assert.That(eventHandler.Method, Is.SameAs(action.Method));
             Assert.That(eventHandler.Target, Is.SameAs(action.Target));
-
-            action.VerifyAllExpectations();
         }
 
         /// <summary>
@@ -151,7 +147,7 @@ namespace Jolt.Test.Functional
         [Test]
         public void ToPredicate()
         {
-            Func<int, bool> functionPredicate = MockRepository.GenerateStub<Func<int, bool>>();
+            Func<int, bool> functionPredicate = Mock.Of<Func<int, bool>>();
 
             Predicate<int> predicate = Functor.ToPredicate(functionPredicate);
             Assert.That(predicate.Method, Is.SameAs(functionPredicate.Method));
@@ -164,7 +160,7 @@ namespace Jolt.Test.Functional
         [Test]
         public void ToPredicateFunc()
         {
-            Predicate<int> predicate = MockRepository.GenerateStub<Predicate<int>>();
+            Predicate<int> predicate = Mock.Of<Predicate<int>>();
 
             Func<int, bool> functionPredicate = Functor.ToPredicateFunc(predicate);
             Assert.That(functionPredicate.Method, Is.SameAs(predicate.Method));
@@ -257,73 +253,12 @@ namespace Jolt.Test.Functional
         }
 
         /// <summary>
-        /// Verifies the behavior of the NoOperation() method, for functions
-        /// that have zero arguments.
-        /// </summary>
-        [Test]
-        public void NoOperation_NoArgs()
-        {
-            Action no_op = Functor.NoOperation();
-            Assert.That(no_op.Target, Is.Null);
-            Assert.That(no_op.Method, Is.SameAs(GetNoOpMethod()));
-        }
-
-        /// <summary>
-        /// Verifies the behavior of the NoOperation() method, for functions
-        /// that have one argument.
-        /// </summary>
-        [Test]
-        public void NoOperation_OneArg()
-        {
-            Action<int> no_op = Functor.NoOperation<int>();
-            Assert.That(no_op.Target, Is.Null);
-            Assert.That(no_op.Method, Is.SameAs(GetNoOpMethod(typeof(int))));
-        }
-
-        /// <summary>
-        /// Verifies the behavior of the NoOperation() method, for functions
-        /// that have two arguments.
-        /// </summary>
-        [Test]
-        public void NoOperation_TwoArgs()
-        {
-            Action<int, char> no_op = Functor.NoOperation<int, char>();
-            Assert.That(no_op.Target, Is.Null);
-            Assert.That(no_op.Method, Is.SameAs(GetNoOpMethod(typeof(int), typeof(char))));
-        }
-
-        /// <summary>
-        /// Verifies the behavior of the NoOperation() method, for functions
-        /// that have three arguments.
-        /// </summary>
-        [Test]
-        public void NoOperation_ThreeArgs()
-        {
-            Action<int, char, string> no_op = Functor.NoOperation<int, char, string>();
-            Assert.That(no_op.Target, Is.Null);
-            Assert.That(no_op.Method, Is.SameAs(GetNoOpMethod(typeof(int), typeof(char), typeof(string))));
-        }
-
-        /// <summary>
-        /// Verifies the behavior of the NoOperation() method, for functions
-        /// that have four arguments.
-        /// </summary>
-        [Test]
-        public void NoOperation_FourArgs()
-        {
-            Action<int, char, string, byte> no_op = Functor.NoOperation<int, char, string, byte>();
-            Assert.That(no_op.Target, Is.Null);
-            Assert.That(no_op.Method, Is.SameAs(GetNoOpMethod(typeof(int), typeof(char), typeof(string), typeof(byte))));
-        }
-
-        /// <summary>
         /// Verifies the behavior of the Identity() method.
         /// </summary>
         [Test]
         public void Identity()
         {
             Func<string, string> identity = Functor.Identity<string>();
-            Assert.That(identity.Target, Is.Null);
 
             for (int i = 0; i < 200; ++i)
             {
@@ -339,7 +274,6 @@ namespace Jolt.Test.Functional
         public void TrueForAll()
         {
             Func<int, bool> predicate = Functor.TrueForAll<int>();
-            Assert.That(predicate.Target, Is.Null);
 
             for (int i = 0; i < 200; ++i)
             {
@@ -354,7 +288,6 @@ namespace Jolt.Test.Functional
         public void FalseForAll()
         {
             Func<int, bool> predicate = Functor.FalseForAll<int>();
-            Assert.That(predicate.Target, Is.Null);
 
             for (int i = 0; i < 200; ++i)
             {

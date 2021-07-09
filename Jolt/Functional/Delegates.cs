@@ -170,7 +170,7 @@ namespace Jolt.Functional
 
     /// <summary>
     /// Encapsulates a method that has five parameters and returns a value
-    /// of the type specified by the <paramref name="TResult" /> parameter.
+    /// of the type specified by the <typeparamref name="TResult" /> parameter.
     /// </summary>
     /// 
     /// <typeparam name="TResult">
@@ -220,7 +220,7 @@ namespace Jolt.Functional
 
     /// <summary>
     /// Encapsulates a method that has six parameters and returns a value
-    /// of the type specified by the <paramref name="TResult" /> parameter.
+    /// of the type specified by the <typeparamref name="TResult" /> parameter.
     /// </summary>
     /// 
     /// <typeparam name="TResult">
@@ -278,7 +278,7 @@ namespace Jolt.Functional
 
     /// <summary>
     /// Encapsulates a method that has seven parameters and returns a value
-    /// of the type specified by the <paramref name="TResult" /> parameter.
+    /// of the type specified by the <typeparamref name="TResult" /> parameter.
     /// </summary>
     /// 
     /// <typeparam name="TResult">
